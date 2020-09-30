@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Customer extends User {
 
-    private double balance;
+    private double balance = 0.0;
     private static long lastCustomerId = 1;
 
     private boolean insertIsCorrect = false;
@@ -94,6 +94,27 @@ public class Customer extends User {
 
     public static long getLastCustomerId() {
         return lastCustomerId;
+    }
+
+    public static Customer getLastCustomer() {
+        try (Connection conn = DriverManager.getConnection(DBConnData.url, DBConnData.username, DBConnData.password)) {
+
+            String sql = "SELECT name, age, balance FROM persons WHERE id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setLong(1, getLastCustomerId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                double balance = resultSet.getDouble("balance");
+                return new Customer(name, age, balance);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean isInsertIsCorrect() {

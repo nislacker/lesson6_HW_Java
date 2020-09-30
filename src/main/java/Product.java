@@ -38,8 +38,6 @@ public class Product {
 
         try (Connection conn = DriverManager.getConnection(DBConnData.url, DBConnData.username, DBConnData.password)) {
 
-            conn.setAutoCommit(false); // for transactions -- commit, rollback, savepoint
-
             String sql = "SELECT label, price FROM products WHERE id = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setLong(1, id);

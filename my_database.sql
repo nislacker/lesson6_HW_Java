@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Сен 30 2020 г., 02:38
+-- Время создания: Сен 30 2020 г., 05:44
 -- Версия сервера: 10.4.14-MariaDB
 -- Версия PHP: 7.4.9
 
@@ -39,13 +39,7 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `customer_id`, `product_id`, `count`) VALUES
-(4, 17, 1, 100),
-(5, 18, 1, 10),
-(6, 19, 2, 5),
-(7, 20, 1, 100),
-(8, 21, 1, 1),
-(12, 29, 2, 50),
-(13, 30, 2, 1);
+(3, 2, 1, 1000);
 
 -- --------------------------------------------------------
 
@@ -65,17 +59,7 @@ CREATE TABLE `persons` (
 --
 
 INSERT INTO `persons` (`id`, `name`, `age`, `balance`) VALUES
-(1, 'Ivan', 20, '0.00'),
-(2, 'Petr', 25, '0.00'),
-(9, 'Max', 30, '0.00'),
-(17, 'Nick', 28, '9001.00'),
-(18, 'Bob', 32, '800.10'),
-(19, 'x', 1, '11086.05'),
-(26, 'f', 3, '3.00'),
-(27, 'g', 30, '50000.00'),
-(28, 'Nick', 30, '5000.00'),
-(29, 'John', 40, '4000.00'),
-(30, 'L', 20, '999995.01');
+(2, 'Василий', 18, '10.00');
 
 -- --------------------------------------------------------
 
@@ -128,13 +112,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT для таблицы `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `persons`
 --
 ALTER TABLE `persons`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `products`
