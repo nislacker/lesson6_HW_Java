@@ -11,6 +11,29 @@ public class Product {
         this.price = price;
     }
 
+    // Отобразить таблицу всех товаров
+    //
+    public static void showAllProducts() {
+
+        try (Connection conn = DriverManager.getConnection(DBConnData.url, DBConnData.username, DBConnData.password)) {
+
+            System.out.println("\n\t\tProducts table\n");
+
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM `products`");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("Id");
+                String label = resultSet.getString("label");
+                Double price = resultSet.getDouble("price");
+
+                System.out.printf("%d. %s: %.2f\n", id, label, price);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static Product getProductFromDB(long id) {
 
         try (Connection conn = DriverManager.getConnection(DBConnData.url, DBConnData.username, DBConnData.password)) {

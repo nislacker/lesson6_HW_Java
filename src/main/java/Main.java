@@ -54,20 +54,7 @@ public class Main {
 
                 savepoint2:
                 {
-                    // Отобразить таблицу всех товаров
-
-                    System.out.println("\n\t\tProducts table\n");
-
-                    Statement statement = conn.createStatement();
-                    ResultSet resultSet = statement.executeQuery("SELECT * FROM `products`");
-
-                    while (resultSet.next()) {
-                        int id = resultSet.getInt("Id");
-                        String label = resultSet.getString("label");
-                        Double price = resultSet.getDouble("price");
-
-                        System.out.printf("%d. %s: %.2f\n", id, label, price);
-                    }
+                    Product.showAllProducts();
 
 //         Создание заказа
 //
