@@ -1,7 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.Scanner;
 
 public class Order {
     private long customer_id;
@@ -34,7 +32,10 @@ public class Order {
 
         try (Connection conn = DriverManager.getConnection(DBConnData.url, DBConnData.username, DBConnData.password)) {
 
-//            conn.setAutoCommit(false); // for transactions -- commit, rollback, savepoint
+            conn.setAutoCommit(false); // for transactions -- commit, rollback, savepoint
+
+            Savepoint sp2 = conn.setSavepoint("sp2");
+            System.out.println("Savepoint #2 created.");
 
             String sql = "INSERT `orders` (`customer_id`, `product_id`, `count`) VALUES (?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -47,7 +48,24 @@ public class Order {
 
             if (!decreaseCustomerBalance(customer_id, decreasingValue)) {
                 System.out.println("Something wrong with customer balance...\n");
+                return false;
             }
+
+            System.out.println("Is everything OK in order?");
+            System.out.print("Enter without quotes 'y' to confirm or 'n' to come back to previous savepoint: ");
+            String answer;
+            Scanner scanner = new Scanner(System.in);
+            while ((answer = scanner.nextLine()).trim().isEmpty()) {
+            }
+
+            if (answer.equals("y")) {
+                conn.commit();
+            } else {
+                conn.rollback(sp2);
+                return false;
+            }
+
+            conn.releaseSavepoint(sp2);
 
             System.out.println("Your order have been added to DB!\n");
             return true;

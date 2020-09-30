@@ -57,6 +57,7 @@ public class Customer extends User {
                 conn.commit();
                 System.out.println("You have been added to DB!\n");
             } else {
+                conn.rollback(sp1);
                 insertIsCorrect = false;
             }
 
@@ -74,6 +75,7 @@ public class Customer extends User {
             assert conn != null;
             try {
                 conn.rollback(sp1);
+                conn.releaseSavepoint(sp1);
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

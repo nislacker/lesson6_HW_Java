@@ -29,11 +29,9 @@ public class Main {
 
             } while (!customer.isDataCorrect() || !customer.addCustomerToDB());
 
-            Savepoint sp2 = conn.setSavepoint("sp2");
-            System.out.println("Savepoint #2 created.");
+            Order order;
 
-            savepoint2:
-            {
+            do {
                 Product.showAllProducts();
 
 //         Создание заказа
@@ -59,48 +57,12 @@ public class Main {
                     }
                 }
 
-                Savepoint sp3 = conn.setSavepoint("sp3");
-                System.out.println("Savepoint #3 created.");
+                long customer_id = Customer.getLastCustomerId();
 
-                savepoint3:
-                {
-                    long customer_id = Customer.getLastCustomerId();
+                order = new Order(customer_id, product_id, count);
+                order.show();
 
-                    Order order = new Order(customer_id, product_id, count);
-                    order.show();
-
-                    System.out.println("Is everything OK in order?");
-                    System.out.print("Enter without quotes 'y' to confirm or 'n' to come back to previous savepoint: ");
-                    String answer;
-                    while ((answer = scanner.nextLine()).trim().isEmpty()) {
-                    }
-
-                    if (answer.equals("y")) {
-                        order.addOrderToDB();
-//                            conn.commit();
-                    } else {
-                        int savepointNumber = 0;
-
-                        while (!(savepointNumber >= 2 && savepointNumber <= 3)) {
-
-                            System.out.print("Enter savepoint number (from 2 to 3) to come back: ");
-                            savepointNumber = scanner.nextInt();
-
-                            if (savepointNumber >= 2 && savepointNumber <= 3) {
-                                switch (savepointNumber) {
-                                    case 2:
-                                        conn.rollback(sp2);
-                                        break savepoint2;
-                                    case 3:
-                                        conn.rollback(sp3);
-                                        break savepoint3;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
+            } while (!order.addOrderToDB());
 
         } catch (SQLException e) {
             e.printStackTrace();
